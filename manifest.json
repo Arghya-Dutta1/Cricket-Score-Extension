@@ -1,0 +1,19 @@
+{
+    "manifest_version": 3,
+    "name": "Live Cricket Scores",
+    "version": "1.0",
+    "description": "Shows cricket scores of matches around the globe.",
+    "permissions": ["activeTab", "https://api.cricapi.com/"],
+    "action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "16": "icon12.png",
+        "48": "icon12.png",
+        "128": "icon12.png"
+      }
+    },
+    "background": {
+      "service_worker": "background.js"
+    }
+  }
+  
