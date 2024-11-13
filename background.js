@@ -14,7 +14,7 @@ chrome.alarms.onAlarm.addListener(alarm => {
 // Function to fetch live cricket scores from CricAPI
 async function fetchCricketScores() {
   try {
-    const response = await fetch(`https://api.cricapi.com/v1/currentMatches?apikey=1dca58b0-e85e-493c-ae6f-4a0b29ae0ace&offset=0`);
+    const response = await fetch(`https://api.cricapi.com/v1/currentMatches?apikey=YOUR_API_KEY`);
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);
     }
