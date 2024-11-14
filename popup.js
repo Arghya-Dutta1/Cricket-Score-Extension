@@ -20,7 +20,11 @@ async function fetchCricketScores() {
           const matchDiv = document.createElement("div");
   
           // Set match name, status, and venue
-          matchDiv.innerText = `${match.name}: ${match.status} \nVenue: ${match.venue}`;
+          matchDiv.innerText =
+          `${match.name}: ${match.status}\n` +
+          `\nScores:\n` +
+          `${match.score[0].inning}: ${match.score[0].r}/${match.score[0].w}w (${match.score[0].o})\n` +
+          `${match.score[1].inning}: ${match.score[1].r}/${match.score[1].w}w (${match.score[1].o})`;
   
           // Create the arrow button
           const arrowBtn = document.createElement("button");
