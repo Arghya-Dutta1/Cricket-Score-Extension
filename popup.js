@@ -1,6 +1,6 @@
 async function fetchCricketScores() {
     try {
-      const response = await fetch(`https://api.cricapi.com/v1/currentMatches?apikey=YOUR_API_KEY`);
+      const response = await fetch(`https://api.cricapi.com/v1/cricScore?apikey=YOUR_API_KEY`);
       const data = await response.json();
       const scoresDiv = document.getElementById("scores");
       scoresDiv.innerHTML = "";
@@ -10,51 +10,67 @@ async function fetchCricketScores() {
   
       // Parse and display each match's live score for specific teams
       if (data && data.data) {
-        const filteredMatches = data.data.filter(match =>
-          specificTeams.some(team => match.teams.includes(team))
-        );
-  
-        // Display only the top 5 filtered matches
-        filteredMatches.slice(0, 5).forEach(match => {
-          // Create the match card div
-          const matchDiv = document.createElement("div");
-  
-          // Set match name, status, and venue
-          matchDiv.innerText =
-          `${match.name}: ${match.status}\n` +
-          `\nScores:\n` +
-          `${match.score[0].inning}: ${match.score[0].r}/${match.score[0].w}w (${match.score[0].o})\n` +
-          `${match.score[1].inning}: ${match.score[1].r}/${match.score[1].w}w (${match.score[1].o})`;
-  
-          // Create the arrow button
-          const arrowBtn = document.createElement("button");
-          arrowBtn.innerText = "🏹"; // Arrow symbol
-          arrowBtn.classList.add("arrow-btn");
-  
-          // Add event listener to open the Google search on click
-          arrowBtn.addEventListener("click", () => {
-            window.open(`https://www.google.com/search?q=${encodeURIComponent(match.name)}`, "_blank");
-          });
-  
-          // Append the arrow button to the match div
-          matchDiv.appendChild(arrowBtn);
-  
-          // Append matchDiv to scoresDiv
-          scoresDiv.appendChild(matchDiv);
+      const filteredMatches = data.data.filter((match) =>
+        specificTeams.some(
+          (team) => match.t1.includes(team) || match.t2.includes(team)
+        )
+      );
+
+      // Display only the top 5 filtered matches
+      filteredMatches.slice(0, 5).forEach((match) => {
+        // Create the match card div
+        const matchDiv = document.createElement("div");
+        matchDiv.classList.add("match-card");
+
+        // Set match details in the desired format
+        matchDiv.innerHTML = `
+  <strong>${match.series}, (${match.matchType.toUpperCase()})</strong>
+  <div class="team-line">
+    <img src="${match.t1img}" alt="${match.t1}">
+    ${match.t1.match(/\[(.*?)\]/)?.[1] || match.t1}: ${match.t1s || "N/A"}
+  </div>
+  <em>VS</em>
+  <div class="team-line">
+    <img src="${match.t2img}" alt="${match.t2}">
+    ${match.t2.match(/\[(.*?)\]/)?.[1] || match.t2}: ${match.t2s || "N/A"}
+  </div>
+  <em>${match.status}</em>
+`;
+
+        // Create the arrow button
+        const arrowBtn = document.createElement("button");
+        arrowBtn.innerHTML = '<i class="fas fa-arrow-right"></i>'; // Right arrow icon
+        arrowBtn.classList.add("arrow-btn");
+
+        // Add event listener to open the Google search on click
+        arrowBtn.addEventListener("click", () => {
+          window.open(
+            `https://www.google.com/search?q=${encodeURIComponent(
+              match.series + " " + match.t1 + " vs " + match.t2
+            )}`,
+            "_blank"
+          );
         });
-  
-        // Show message if no matches are found
-        if (filteredMatches.length === 0) {
-          scoresDiv.innerText = "No live scores available for the specified teams.";
-        }
-      } else {
-        scoresDiv.innerText = "No live scores available.";
+
+        // Append the arrow button to the match div
+        matchDiv.appendChild(arrowBtn);
+
+        // Append matchDiv to scoresDiv
+        scoresDiv.appendChild(matchDiv);
+      });
+
+      // Show message if no matches are found
+      if (filteredMatches.length === 0) {
+        scoresDiv.innerText =
+          "No live scores available for the specified teams.";
       }
-    } catch (error) {
-      console.error("Error fetching cricket scores:", error);
-      document.getElementById("scores").innerText = "Failed to load scores.";
+    } else {
+      scoresDiv.innerText = "No live scores available.";
     }
+  } catch (error) {
+    console.error("Error fetching cricket scores:", error);
+    document.getElementById("scores").innerText = "Failed to load scores.";
   }
-  
-  document.addEventListener("DOMContentLoaded", fetchCricketScores);
-  
+}
+
+document.addEventListener("DOMContentLoaded", fetchCricketScores);
