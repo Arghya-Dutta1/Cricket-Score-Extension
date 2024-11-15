@@ -6,7 +6,9 @@ This is a Chrome extension that displays live cricket match scores for specific 
 
 ## Screenshots
 
-![image](https://github.com/user-attachments/assets/f2ed810c-9312-49ab-9a4a-9386a788e2a6)
+<img src="https://github.com/user-attachments/assets/5ca0b09b-af8d-4121-9bc6-4ea6fa506d85" alt="Img1" width="200" height="200">
+
+<img src="https://github.com/user-attachments/assets/cc99c656-b70d-4401-ab26-dc416eb28b76" alt="Img2" width="200" height="200">
 
 
 
